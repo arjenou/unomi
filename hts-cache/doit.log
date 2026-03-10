@@ -1,0 +1,8 @@
+https://zeroten.jp/ -O ./zeroten_site +*.zeroten.jp/* -*/wp-admin/* -*/wp-login.php* -* +*.css +*.js +*.jpg +*.png +*.svg +*.woff -r10
+File generated automatically on Tue, 10 Mar 2026 17:29:36, do NOT edit
+
+To update a mirror, just launch httrack without any parameters
+The existing cache will be used (and modified)
+To have other options, retype all parameters and launch HTTrack
+To continue an interrupted mirror, just launch httrack without any parameters
+
