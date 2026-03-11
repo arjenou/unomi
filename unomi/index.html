@@ -69,6 +69,55 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </style>
 
 <link rel='shortlink' href='index.html' />
+<style>
+/* Center logo - opening (page refresh), nav button, footer gnav */
+.opening {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.opening .logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.opening .logo img {
+  display: block !important;
+}
+.gnav_wrapper .button a[href="index.html"] {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+}
+.gnav_wrapper .button .logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.gnav__head .logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.gnav__head .logo a {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+/* PC端：避免换行后单字成行（orphan），参考 text-wrap: pretty 成熟方案 */
+@media (min-width: 769px) {
+  .think_list .description,
+  .think_list p.description,
+  section .description {
+    text-wrap: pretty;
+  }
+  .think_list h3.heading,
+  .think_list .heading {
+    text-wrap: balance;
+  }
+}
+</style>
 <link rel="icon" href="logo-unomi.png" sizes="32x32" />
 		<link rel="icon" href="logo-unomi.png" sizes="192x192" />
 		<link rel="apple-touch-icon" href="logo-unomi.png" />
@@ -1872,7 +1921,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 		          <span class="text">
 		            <a href="index.html">
 		              <span class="logo">
-		                <img src="logo-unomi-daohang.png" width="49" height="45" alt="UNOMI" style="object-fit: contain;">
+		                <img src="logo-unomi-daohang.png" width="37" height="34" alt="UNOMI" style="object-fit: contain;">
 		              </span>
 		            </a>
 		            <span class="close -font_manrope -color_white">CLOSE</span>
