@@ -129,6 +129,16 @@ section.service#service {
 .gnav .group3 {
   display: none !important;
 }
+/* FV ヒーローコピー：意図どおり3行のみ。各行は折り返さない（「力になる」を分割しない） */
+.fv .copy__text {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.fv .copy__text .fv-copy-line {
+  display: block;
+  white-space: nowrap;
+}
 </style>
 <link rel="icon" href="logo-unomi.png" sizes="32x32" />
 		<link rel="icon" href="logo-unomi.png" sizes="192x192" />
@@ -154,10 +164,10 @@ section.service#service {
           <canvas id="fvCanvas"></canvas>
           <div class="copy -font_unbounded -color_white">
             <p class="a11y_hidden">夢を持つ仲間が集まる 束ねれば、大きな力になる みんなで創る、価値</p>
-            <p class="copy__text" style="color: #fff; font-size: clamp(22px, 4.5vw, 65px); font-weight: 900; line-height: 1.3; margin: 0; text-align: right;">
-              夢を持つ仲間が集まる<br>
-              束ねれば、大きな力に<span style="white-space:nowrap">なる</span><br>
-              みんなで創る、価値
+            <p class="copy__text" id="fvCopyText" style="color: #fff; font-weight: 900; line-height: 1.3; margin: 0; text-align: right; font-size: clamp(12px, 4.5vw, 65px);">
+              <span class="fv-copy-line">夢を持つ仲間が集まる</span>
+              <span class="fv-copy-line">束ねれば、大きな力になる</span>
+              <span class="fv-copy-line">みんなで創る、価値</span>
             </p>
           </div>
           <div class="other -font_unbounded -color_white">
@@ -503,7 +513,7 @@ section.service#service {
                       </p>
                                             <ul class="project_list"></ul>
                       <div class="link">
-                        <a href="javascript:void(0)">
+                        <a href="service/index.html" data-barba-prevent="">
                           <span class="label -font_unbounded -color_accent">MORE</span>
                           <!--
 	データ
@@ -724,7 +734,7 @@ section.service#service {
                       </p>
                                             <ul class="project_list"></ul>
                       <div class="link">
-                        <a href="javascript:void(0)">
+                        <a href="service/index.html" data-barba-prevent="">
                           <span class="label -font_unbounded -color_accent">MORE</span>
                           <!--
 	データ
@@ -939,7 +949,7 @@ section.service#service {
                       </p>
                                             <ul class="project_list"></ul>
                       <div class="link">
-                        <a href="javascript:void(0)">
+                        <a href="service/index.html" data-barba-prevent="">
                           <span class="label -font_unbounded -color_accent">MORE</span>
                           <!--
 	データ
@@ -1148,7 +1158,7 @@ section.service#service {
                       </p>
                                             <ul class="project_list"></ul>
                       <div class="link">
-                        <a href="javascript:void(0)">
+                        <a href="service/index.html" data-barba-prevent="">
                           <span class="label -font_unbounded -color_accent">MORE</span>
                           <!--
 	データ
@@ -1357,7 +1367,7 @@ section.service#service {
                       </p>
                                             <ul class="project_list"></ul>
                       <div class="link">
-                        <a href="javascript:void(0)">
+                        <a href="service/index.html" data-barba-prevent="">
                           <span class="label -font_unbounded -color_accent">MORE</span>
                           <!--
 	データ
@@ -1569,14 +1579,14 @@ section.service#service {
 
 
 <li class="-topic_item">
-	<a href="https://www.unomi-jp.com/topics/707/">
+	<a href="topics/tiktok-shop-what-is.html" data-barba-prevent="">
 		<div class="thumb" data-hover="img">
-			<img src="topics/1.png" width="150" height="110" alt="2025年を振り返るダイジェストムービーを公開しました">
+			<img src="topics/1.png" width="150" height="110" alt="TikTokショップとは？新時代の購買体験を徹底解説">
 		</div>
 		<div class="group">
-			<time class="date -font_manrope -color_gray" datetime="2025.12.29">2025.12.29</time>
-			<p class="category -textS -color_gray">お知らせ</p>
-			<h3 class="heading -textM">2025年を振り返るダイジェストムービーを公開しました</h3>
+			<time class="date -font_manrope -color_gray" datetime="2025.06.23">2025.06.23</time>
+			<p class="category -textS -color_gray">コラム</p>
+			<h3 class="heading -textM">TikTokショップとは？新時代の購買体験を徹底解説</h3>
 		</div>
 		<div class="link">
 			<!--
@@ -1607,14 +1617,14 @@ section.service#service {
 
 
 <li class="-topic_item">
-	<a href="https://www.unomi-jp.com/topics/622/">
+	<a href="topics/tiktok-monetization-guide.html" data-barba-prevent="">
 		<div class="thumb" data-hover="img">
-			<img src="topics/2.png" width="150" height="110" alt="コーポレートサイトをリニューアルしました">
+			<img src="topics/2.png" width="150" height="110" alt="TikTokで収益化する！人気クリエイターが実践する稼ぎ方完全ガイド">
 		</div>
 		<div class="group">
-			<time class="date -font_manrope -color_gray" datetime="2025.11.13">2025.11.13</time>
-			<p class="category -textS -color_gray">お知らせ</p>
-			<h3 class="heading -textM">コーポレートサイトをリニューアルしました</h3>
+			<time class="date -font_manrope -color_gray" datetime="2025.06.22">2025.06.22</time>
+			<p class="category -textS -color_gray">コラム</p>
+			<h3 class="heading -textM">TikTokで収益化する！人気クリエイターが実践する稼ぎ方完全ガイド</h3>
 		</div>
 		<div class="link">
 			<!--
@@ -1645,14 +1655,14 @@ section.service#service {
 
 
 <li class="-topic_item">
-	<a href="https://www.unomi-jp.com/topics/628/">
+	<a href="topics/tiktok-shop-accelerate-business.html" data-barba-prevent="">
 		<div class="thumb" data-hover="img">
-			<img src="topics/3.png" width="150" height="110" alt="UNOMI Parkのコーポレートサイトをリニューアルしました">
+			<img src="topics/3.png" width="150" height="110" alt="【最新版】TikTokショップであなたのビジネスを加速させる方法">
 		</div>
 		<div class="group">
-			<time class="date -font_manrope -color_gray" datetime="2025.08.08">2025.08.08</time>
-			<p class="category -textS -color_gray">お知らせ</p>
-			<h3 class="heading -textM">UNOMI Parkのコーポレートサイトをリニューアルしました</h3>
+			<time class="date -font_manrope -color_gray" datetime="2025.06.21">2025.06.21</time>
+			<p class="category -textS -color_gray">コラム</p>
+			<h3 class="heading -textM">【最新版】TikTokショップであなたのビジネスを加速させる方法</h3>
 		</div>
 		<div class="link">
 			<!--
@@ -1865,6 +1875,51 @@ var snowmonkeyforms_recaptcha = {"siteKey":"6LdwoREsAAAAABPxK2K5kc1l6b4E2ZAWqCw5
 //# sourceURL=snow-monkey-forms%40recaptcha-js-after
 /* ]]> */
 </script>
+		<script>
+		(function () {
+			function fitFvCopy() {
+				var root = document.getElementById("fvCopyText");
+				if (!root) return;
+				var lines = root.querySelectorAll(".fv-copy-line");
+				if (!lines.length) return;
+				var minPx = 10;
+				var maxPx = 65;
+				var width = root.clientWidth;
+				if (width <= 0) return;
+				var low = minPx;
+				var high = maxPx;
+				var best = minPx;
+				for (var i = 0; i < 22; i++) {
+					var mid = (low + high) / 2;
+					root.style.fontSize = mid + "px";
+					var maxW = 0;
+					for (var j = 0; j < lines.length; j++) {
+						var w = lines[j].scrollWidth;
+						if (w > maxW) maxW = w;
+					}
+					if (maxW <= width + 0.5) {
+						best = mid;
+						low = mid;
+					} else {
+						high = mid;
+					}
+				}
+				root.style.fontSize = best + "px";
+			}
+			function initFvCopyFit() {
+				fitFvCopy();
+				var root = document.getElementById("fvCopyText");
+				if (root && window.ResizeObserver) {
+					new ResizeObserver(fitFvCopy).observe(root);
+				}
+			}
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", initFvCopyFit);
+			} else {
+				initFvCopyFit();
+			}
+		})();
+		</script>
 		<script type="module" src="wp2025/wp-content/themes/zeroten/assets/js/index0f82.js?t2" defer></script>
 		<script type="module" src="wp2025/wp-content/themes/zeroten/assets/js/vendor.js" defer></script>
 		</body>

@@ -106,6 +106,16 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 .gnav .group3 {
   display: none !important;
 }
+/* SERVICE 各カード：左カラムで .photo に margin-top:auto が当たり副題と画像の間が空きすぎるのを詰める */
+/* 右カラム本文を左の見出し＋画像ブロックの縦方向中央に揃える */
+@media (min-width: 769px) {
+  .service_page .service__main .service_list li a > figure.photo {
+    margin-top: 1rem !important;
+  }
+  .service_page .service__main .service_list li a > .content {
+    align-self: center;
+  }
+}
 </style>
 	<style id="dynamic-grid-css">._colspan_1_2 { grid-column: 1/2; }
 ._colspan_1_3 { grid-column: 1/3; }
