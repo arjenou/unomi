@@ -86,6 +86,11 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 .topics_page .topics .-topic_item .link {
   flex-shrink: 0;
 }
+@media (max-width: 768px) {
+  section.topics .-topic_item .category {
+    display: none !important;
+  }
+}
 </style>
 </head>
 	<body data-barba="wrapper" class="archive post-type-archive post-type-archive-topics wp-theme-zeroten pc">

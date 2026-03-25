@@ -150,6 +150,12 @@ section.service#service {
   display: block;
   object-fit: cover;
 }
+/* TOPICS 列表：移动端隐藏「コラム」标签（避免与日期重叠） */
+@media (max-width: 768px) {
+  section.topics .-topic_item .category {
+    display: none !important;
+  }
+}
 </style>
 <link rel="icon" href="logo-unomi.png" sizes="32x32" />
 		<link rel="icon" href="logo-unomi.png" sizes="192x192" />
