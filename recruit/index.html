@@ -103,6 +103,20 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 .gnav .group3 {
   display: none !important;
 }
+/* RECRUIT サマリー写真：モバイルでスライド幅を抑え、1枚分の横スクロール量を短く（画像は縮小・比率維持） */
+@media (max-width: 768px) {
+  .recruit_page .summary .summary__main .embla__slide.photo {
+    flex: 0 0 76% !important;
+    min-width: 0;
+  }
+  .recruit_page .summary .summary__main .embla__slide.photo img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 62vw;
+    object-fit: cover;
+    display: block;
+  }
+}
 </style>
 	<style id="dynamic-grid-css">._colspan_1_2 { grid-column: 1/2; }
 ._colspan_1_3 { grid-column: 1/3; }
