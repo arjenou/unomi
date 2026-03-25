@@ -90,6 +90,20 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   section.topics .-topic_item .category {
     display: none !important;
   }
+  .topics_page .topics .-topic_item .group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.35rem !important;
+  }
+  .topics_page .topics .-topic_item .group .date {
+    display: block;
+  }
+  .topics_page .topics .-topic_item .group .heading {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 </style>
 </head>

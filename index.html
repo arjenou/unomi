@@ -150,10 +150,51 @@ section.service#service {
   display: block;
   object-fit: cover;
 }
-/* TOPICS 列表：移动端隐藏「コラム」标签（避免与日期重叠） */
+/* TOPICS 列表：移动端隐藏「コラム」；日期与标题纵向排列（解除主题的 grid + display:contents 重叠） */
 @media (max-width: 768px) {
   section.topics .-topic_item .category {
     display: none !important;
+  }
+  .top_page .topics__main .-topic_list li a {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px;
+    position: relative;
+    padding-right: 40px;
+  }
+  .top_page .topics__main .-topic_list li .thumb {
+    flex-shrink: 0;
+    width: 88px;
+    max-width: 30vw;
+    aspect-ratio: 150 / 110;
+    grid-row: auto !important;
+    grid-column: auto !important;
+  }
+  .top_page .topics__main .-topic_list li .group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.35rem !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  .top_page .topics__main .-topic_list li .group .date {
+    grid-column: unset !important;
+    grid-row: unset !important;
+  }
+  .top_page .topics__main .-topic_list li .group .heading {
+    grid-row: unset !important;
+    grid-column: unset !important;
+    margin-top: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .top_page .topics__main .-topic_list li .link {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    bottom: auto !important;
   }
 }
 </style>
