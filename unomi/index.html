@@ -123,8 +123,11 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   display: none !important;
 }
 /* 隐藏 VIEW ALL 按钮 */
-.projects__foot .button,
 .topics__head .button {
+  display: none !important;
+}
+/* 隐藏首页 SERVICE 区块（完整版见 service/） */
+section.service#service {
   display: none !important;
 }
 </style>
@@ -301,7 +304,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
           </div>
         </section>
 
-        <section class="service">
+        <section class="service" id="service">
           <div class="container -grid_space">
             <div class="inner">
               <div class="service__head -grid">
@@ -1528,118 +1531,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
           </div>
         </section>
 
-        <section class="project">
-          <div class="container -grid_space">
-            <div class="inner">
-              <div class="project__head">
-                <h2 class="heading -font_unbounded">PROJECTS</h2>
-              </div>
-              <div class="projects__main">
-                <ul class="-project_list -grid_column2">
-                  <li>
-                    <a href="javascript:void(0)">
-    <div class="thumb embla -embla_autofade">
-      <div class="embla__viewport">
-        <div class="embla__container">
-                      <div class="embla__slide" data-hover="img">
-                              <img src="project/chuhai.png" width="256" height="194" alt="品牌出海・海外発表" style="object-fit: cover;">
-            </div>
-                  </div>
-      </div>
-    </div>
-                      <p class="client -textS -color_gray">UNOMI</p>
-                      <h3 class="heading -textL">品牌出海・海外発表</h3>
-    <ul class="tag_list -textS -color_gray">
-                        <li># TikTok shopセミナー</li>
-                        <li># 海外発表</li>
-          </ul>
-  </a>
-                  </li>
-                  <li>
-                    <a href="javascript:void(0)">
-    <div class="thumb embla -embla_autofade">
-      <div class="embla__viewport">
-        <div class="embla__container">
-                      <div class="embla__slide" data-hover="img">
-                              <img src="project/sheying.png" width="256" height="194" alt="東京配信スタジオ" style="object-fit: cover;">
-            </div>
-                  </div>
-      </div>
-    </div>
-                      <p class="client -textS -color_gray">UNOMI</p>
-                      <h3 class="heading -textL">東京配信スタジオ</h3>
-    <ul class="tag_list -textS -color_gray">
-                        <li># 東京配信スタジオ</li>
-                        <li># 撮影</li>
-          </ul>
-  </a>
-                  </li>
-                  <li>
-                    <a href="javascript:void(0)">
-    <div class="thumb embla -embla_autofade">
-      <div class="embla__viewport">
-        <div class="embla__container">
-                      <div class="embla__slide" data-hover="img">
-                              <img src="project/titok.png" width="256" height="194" alt="TikTok" style="object-fit: cover;">
-            </div>
-                  </div>
-      </div>
-    </div>
-    <p class="client -textS -color_gray">UNOMI</p>
-                      <h3 class="heading -textL">TikTok shopセミナー</h3>
-    <ul class="tag_list -textS -color_gray">
-                        <li># TikTok shopセミナー共同開催</li>
-                        <li># TikTok</li>
-          </ul>
-  </a>
-                  </li>
-                  <li>
-                    <a href="javascript:void(0)">
-    <div class="thumb embla -embla_autofade">
-      <div class="embla__viewport">
-        <div class="embla__container">
-                      <div class="embla__slide" data-hover="img">
-                              <img src="project/zhanhui.png" width="256" height="194" alt="インフルエンサーコミュニティー運営" style="object-fit: cover;">
-            </div>
-                  </div>
-      </div>
-    </div>
-    <p class="client -textS -color_gray">UNOMI</p>
-                      <h3 class="heading -textL">インフルエンサーコミュニティー運営</h3>
-    <ul class="tag_list -textS -color_gray">
-                        <li># インフルエンサーコミュニティー運営</li>
-                        <li># 展会</li>
-          </ul>
-  </a>
-                  </li>
-          </ul>
-              </div>
-              <div class="projects__foot">
-                <div class="button">
-                  <a href="https://www.unomi-jp.com/blog/">
-                    <span class="label -font_unbounded">VIEW ALL</span>
-                    <!--
-	データ
-	color: black、white、accent
-	status: anchor、
--->
-
-
-<div class="-arrow1  accent">
-  <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path d="M0 6.88098L13.907 6.88098" stroke="" stroke-width="0.761905" vector-effect="non-scaling-stroke" />
-		<path d="M7.78711 0.761902C7.78711 4.14138 10.5267 6.88098 13.9062 6.88098" stroke="" stroke-width="0.761905"
-			vector-effect="non-scaling-stroke" />
-		<path d="M7.78711 13.0001C7.78711 9.62059 10.5267 6.88098 13.9062 6.88098" stroke="" stroke-width="0.761905"
-			vector-effect="non-scaling-stroke" />
-	</svg>
-</div>                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section class="topics">
           <div class="container -grid_space">
             <div class="inner -grid">
@@ -1791,7 +1682,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
         <section id="recruit" class="-recruit_cta">
 	<div class="container -grid_space">
 		<div class="inner">
-			<a href="https://www.unomi-jp.com/recruit/">
+			<a href="recruit/index.html">
 				<div class="recruit_cta__main">
 					<h2 class="heading -font_unbounded">RECRUIT</h2>
 					<p class="description -textL">同じ船に乗って未来へ進むメンバーを募集中</p>
@@ -1813,19 +1704,19 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </div>				</div>
 				<div class="recruit_cta__foot">
 					<div class="photo photo1">
-						<img src="recruit/1.jpeg" width="190" height="125" alt="">
+						<img src="recruit/img/1.jpeg" width="190" height="125" alt="">
 					</div>
 					<div class="photo photo2">
 						<picture>
-							<source srcset="recruit/2.jpeg" media="(min-width: 769px)">
-							<img src="recruit/2.jpeg" width="220" height="148" alt="">
+							<source srcset="recruit/img/2.jpeg" media="(min-width: 769px)">
+							<img src="recruit/img/2.jpeg" width="220" height="148" alt="">
 						</picture>
 					</div>
 					<div class="photo photo3">
-						<img src="recruit/3.jpeg" width="205" height="140" alt="">
+						<img src="recruit/img/3.jpeg" width="205" height="140" alt="">
 					</div>
 					<div class="photo photo4">
-						<img src="recruit/4.jpeg" width="180" height="127" alt="">
+						<img src="recruit/img/4.jpeg" width="180" height="127" alt="">
 					</div>
 				</div>
 			</a>
@@ -1861,13 +1752,11 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 		                      data-gradient-color="white">ABOUT</a></li>
 		                  <li><a href="company/" data-gradient-method="hover"
 		                      data-gradient-color="white">COMPANY</a></li>
-		                  <li><a href="https://www.unomi-jp.com/blog/" data-gradient-method="hover"
-		                      data-gradient-color="white">PROJECTS</a></li>
-		                  <li><a href="https://www.unomi-jp.com/service/" data-gradient-method="hover"
+		                  <li><a href="service/" data-gradient-method="hover"
 		                      data-gradient-color="white">SERVICE</a></li>
 		                  <li><a href="https://www.unomi-jp.com/topics/" data-gradient-method="hover"
 		                      data-gradient-color="white">TOPICS</a></li>
-		                  <li><a href="https://www.unomi-jp.com/recruit/" data-gradient-method="hover"
+		                  <li><a href="recruit/index.html" data-gradient-method="hover"
 		                      data-gradient-color="white">RECRUIT</a></li>
 		                </ul>
 		                <div class="other -font_manrope">
