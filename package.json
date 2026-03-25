@@ -1,0 +1,8 @@
+{
+  "name": "unomi-static",
+  "private": true,
+  "description": "Static HTML site; satisfies Vercel install/build when no deps",
+  "scripts": {
+    "build": "node -e \"process.exit(0)\""
+  }
+}
