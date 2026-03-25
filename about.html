@@ -176,6 +176,10 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   width: 150px;
   height: 150px;
 }
+/* MEMBER：テキストを区切り線（行）の左端に揃える（テーマの .text の余分な padding-left を打ち消し） */
+.about_page .member__main .member_list li .text {
+  padding-left: 0 !important;
+}
 /* 与首页一致：导航按钮内 / 展开菜单顶部的 logo 居中（about 页原先未引入 index 的样式） */
 .gnav_wrapper .button a {
   display: flex !important;
