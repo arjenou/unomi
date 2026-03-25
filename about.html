@@ -170,15 +170,20 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 ._column_w_12 { grid-template-columns: repeat(12, 1fr); }
 </style>
 <style>
-/* MEMBER：写真なしでも元レイアウト用に枠を確保 */
-.about_page .member_list .photo .member_photo_slot {
-  display: block;
-  width: 150px;
-  height: 150px;
+/* MEMBER：写真列なし。テキストをグリッド左端（区切り線の開始位置）に揃える */
+.about_page .member__main .member_list li > a {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  align-items: start !important;
 }
-/* MEMBER：テキストを区切り線（行）の左端に揃える（テーマの .text の余分な padding-left を打ち消し） */
 .about_page .member__main .member_list li .text {
+  grid-column: 1 / -1 !important;
   padding-left: 0 !important;
+  display: block !important;
+}
+.mb .about_page .member__main .member_list li .text .description {
+  grid-row: auto !important;
+  grid-column: auto !important;
 }
 /* 与首页一致：导航按钮内 / 展开菜单顶部的 logo 居中（about 页原先未引入 index 的样式） */
 .gnav_wrapper .button a {
@@ -583,9 +588,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                 <ul class="member_list">
                   <li>
                     <a href="javascript:void(0)">
-                      <div class="photo" data-hover="img">
-                        <span class="member_photo_slot" aria-hidden="true"></span>
-                      </div>
                       <div class="text">
                         <div class="group">
                           <p class="post -font_manrope -color_gray">COO</p>
@@ -601,9 +603,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                   </li>
                   <li>
                     <a href="javascript:void(0)">
-                      <div class="photo" data-hover="img">
-                        <span class="member_photo_slot" aria-hidden="true"></span>
-                      </div>
                       <div class="text">
                         <div class="group">
                           <p class="name -textM">広告運用担当</p>
@@ -622,9 +621,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                   </li>
                   <li>
                     <a href="javascript:void(0)">
-                      <div class="photo" data-hover="img">
-                        <span class="member_photo_slot" aria-hidden="true"></span>
-                      </div>
                       <div class="text">
                         <div class="group">
                           <p class="name -textM">ライブコマース運用担当</p>
