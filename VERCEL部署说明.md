@@ -1,10 +1,27 @@
-# Vercel 部署：避免访客看到「安全认证 / 登录验证」界面
+# 部署：避免访客看到「安全认证 / 浏览器确认」界面
 
-访客在浏览器里看到 **Vercel 登录页、人机验证、或「Verify / Continue」** 一类界面，几乎都不是由仓库里的 HTML 决定的，而是 **Vercel 项目/团队层面的访问控制**。请按下面顺序在 **Vercel 控制台** 里逐项检查并保存。
+若页面长时间停在 **「ブラウザを確認しています」** 并转圈，多半是 **域名前面的 CDN/WAF（常见为 Cloudflare）** 在做浏览器检测，**不是** 本仓库 HTML 能关掉的。请先在 **Cloudflare**（若 `unomi-jp.com` 的 DNS 在 Cloudflare 解析）处理，再查 Vercel。
 
 ---
 
-## 1. 部署保护（最常见原因）
+## 0. Cloudflare（出现「ブラウザを確認しています」时优先查）
+
+登录 [Cloudflare Dashboard](https://dash.cloudflare.com) → 选中域名 `unomi-jp.com`：
+
+| 位置 | 建议（公开官网、减少验证页） |
+|------|------------------------------|
+| **Security** → **Settings** → **Security Level** | 设为 **Medium** 或 **Low**；不要长期开 **I'm Under Attack**（会全员挑战）。 |
+| **Security** → **Bots** | 若开了 **Super Bot Fight Mode** 等，可先 **关闭** 或改为较宽松策略（按套餐可见选项略有不同）。 |
+| **Firewall Rules / WAF** | 检查是否有规则对 `/service/*` 或全站 **Challenge / JS Challenge**；公开页面可改为 **Allow** 或删除该条测试。 |
+| **SSL/TLS** | 与「浏览器确认」无直接关系，一般不必为关验证而改。 |
+
+保存后等 **1～3 分钟** 再用无痕窗口访问 `https://www.unomi-jp.com/service/index.html` 复测。
+
+> **说明：** 浏览器右上角若出现 **「验证你的身份」**（中文），有时是 **Edge / 系统或扩展** 的提示，与网站无关；可换 Chrome 无痕或暂时关掉相关扩展对比。
+
+---
+
+## 1. Vercel 部署保护（登录页、Vercel 账号验证）
 
 **路径：** 项目 → **Settings** → **Deployment Protection**
 
@@ -55,6 +72,7 @@
 
 ## 6. 自检清单（保存前打勾）
 
+- [ ] **Cloudflare**（若使用）：Security Level 非「Under Attack」；Bots/WAF 未对全站强挑战  
 - [ ] **Deployment Protection**：Production 不要求登录 / 无密码  
 - [ ] **Attack Challenge Mode**：未长期开启（除非正在应对攻击）  
 - [ ] 用 **正式域名 + 无痕窗口** 复测，而非仅用 Preview 链接  
