@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>お申し込みありがとうございます｜株式会社UNOMI</title>
+  <link rel="canonical" href="https://www.unomi-jp.com/form/thanks.html" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+      background: #f7f9fa;
+      color: #07256c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    main {
+      max-width: 520px;
+      width: 100%;
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 28px 36px;
+      box-shadow: 0 4px 24px rgba(7, 37, 108, 0.08);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    p {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #333;
+    }
+    p.note {
+      font-size: 0.85rem;
+      color: #62687f;
+    }
+    a {
+      display: inline-block;
+      margin-top: 8px;
+      color: #0061ff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>お申し込みありがとうございます</h1>
+    <p id="lead">
+      ご入力いただいた会社のメールアドレス宛に、お申し込みを受け付けた旨の<strong>確認メール（自動送信）</strong>をお送りしています。数分経っても届かない場合は、迷惑メールフォルダもご確認ください。
+    </p>
+    <p class="note">
+      担当より内容を確認のうえ、改めてご連絡いたします。
+    </p>
+    <p><a href="/form/">セミナーページに戻る</a></p>
+  </main>
+  <script>
+    (function () {
+      if (new URLSearchParams(window.location.search).get("m") === "no-confirm") {
+        var el = document.getElementById("lead");
+        if (el) {
+          el.innerHTML =
+            "お申し込みは正常に完了しました。確認メールの送信に失敗した可能性があります。お手数ですが、届かない場合はセミナー運営事務局（<a href=\"mailto:info@unomi-jp.com\">info@unomi-jp.com</a>）までお問い合わせください。";
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

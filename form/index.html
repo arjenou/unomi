@@ -1048,9 +1048,21 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
     })
       .then(function (r) {
         if (r.ok) {
-          show("ok", "お申し込みを受け付けました。担当よりご連絡いたします。");
-          form.reset();
-          return;
+          return r
+            .json()
+            .catch(function () {
+              return {};
+            })
+            .then(function (data) {
+              var q =
+                data && data.confirmationSent === false ? "?m=no-confirm" : "";
+              window.location.assign(
+                new URL(
+                  "/form/thanks.html" + q,
+                  window.location.origin
+                ).href
+              );
+            });
         }
         if (r.status === 503) {
           show("err", "送信システムが未設定です。しばらくしてから再度お試しください。");

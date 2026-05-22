@@ -76,7 +76,7 @@
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`hby@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。
+`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`hby@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。成功后会向表单中 **「会社のメールアドレス」** 解析出的地址再发一封 **确认邮件（自动送信）**，并 **跳转 `/form/thanks.html`**；若确认邮件未发出则带 **`?m=no-confirm`** 并显示备用说明。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 

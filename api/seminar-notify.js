@@ -7,6 +7,9 @@
  *   SMTP_USER, SMTP_PASS, SMTP_FROM (optional, defaults to SMTP_USER),
  *   SEMINAR_NOTIFY_CC (optional comma-separated extra recipients),
  *   SEMINAR_ALLOWED_ORIGINS (comma-separated, e.g. https://www.unomi-jp.com)
+ *
+ * On success, sends a second confirmation email to the applicant address parsed
+ * from the field whose label contains 会社 + メール (会社のメールアドレス).
  */
 
 const nodemailer = require("nodemailer");
@@ -49,6 +52,29 @@ function escapeHtml(s) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function simpleValidEmail(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(s || "").trim());
+}
+
+/** フォームの「会社のメールアドレス」欄から送信者メールを取得 */
+function findApplicantEmail(rows) {
+  for (const r of rows) {
+    const l = String(r.label || "");
+    if (l.includes("会社") && l.includes("メール")) {
+      const v = String(r.value || "").trim();
+      return simpleValidEmail(v) ? v : "";
+    }
+  }
+  for (const r of rows) {
+    const l = String(r.label || "");
+    if (l.includes("メールアドレス")) {
+      const v = String(r.value || "").trim();
+      return simpleValidEmail(v) ? v : "";
+    }
+  }
+  return "";
 }
 
 module.exports = async (req, res) => {
@@ -168,5 +194,47 @@ module.exports = async (req, res) => {
     return res.status(502).json(out);
   }
 
-  return res.status(200).json({ ok: true });
+  let confirmationSent = false;
+  const applicant = findApplicantEmail(rows);
+  if (
+    applicant &&
+    applicant.toLowerCase() !== to.toLowerCase()
+  ) {
+    const seminarTitle = body.pageTitle || "セミナー";
+    const confirmSubject = `[UNOMI] お申し込みを受け付けました（${seminarTitle}）`;
+    const confirmText = [
+      "このメールは、セミナーお申し込みフォームから送信いただいた内容を受け付けた通知です（自動送信）。",
+      "",
+      "お申し込みありがとうございました。内容を確認のうえ、担当より改めてご連絡いたします。",
+      "",
+      "---",
+      `イベント: ${seminarTitle}`,
+      `受付: ${new Date().toISOString()}`,
+    ].join("\n");
+    const confirmHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>
+<p>このメールは、セミナーお申し込みフォームから送信いただいた内容を<strong>受け付けた通知</strong>です（自動送信）。</p>
+<p>お申し込みありがとうございました。内容を確認のうえ、担当より改めてご連絡いたします。</p>
+<p style="margin-top:16px;font-size:12px;color:#666;">${escapeHtml(
+      seminarTitle
+    )}<br>${escapeHtml(
+      new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
+    )}（受付）</p>
+</body></html>`;
+    try {
+      await transporter.sendMail({
+        from,
+        to: applicant,
+        subject: confirmSubject,
+        text: confirmText,
+        html: confirmHtml,
+      });
+      confirmationSent = true;
+    } catch (e) {
+      console.error("seminar-notify confirmation sendMail:", e);
+    }
+  } else if (applicant && applicant.toLowerCase() === to.toLowerCase()) {
+    confirmationSent = true;
+  }
+
+  return res.status(200).json({ ok: true, confirmationSent });
 };
