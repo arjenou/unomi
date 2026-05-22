@@ -70,13 +70,11 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-`/form/` 为 **自社静的フォーム** のみ。送信内容は **当該 API 経由でメール** され、**ec-force 等の外部 API は使用しません**。
-
 ---
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` のフォーム送信時、ブラウザが **`/api/seminar-notify`** に JSON を **POST** し、サーバー側の **nodemailer** で **`HBY@unomi-jp.com`**（環境変数 `SEMINAR_NOTIFY_TO` で変更可）に届きます。
+`/form/` は **自社ホストの静的 HTML** のみで構成され、**ec-force.com へはリクエストを送りません**。フォーム送信は **`POST /api/seminar-notify`** のみ行い、**nodemailer** で **`HBY@unomi-jp.com`** にメールします（`SEMINAR_NOTIFY_TO` で上書き可）。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
@@ -90,7 +88,7 @@
 | `SEMINAR_NOTIFY_TO` | 收件人（可选，默认 `HBY@unomi-jp.com`） |
 | `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`，以及在 Vercel 上部署时的 **`*.vercel.app`** 预览域名 |
 
-若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，画面上会表示送信失敗。
+若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，页面会提示送信系统未配置。
 
 本地联调：复制根目录 **`.env.example`** 为 **`.env.local`**，在项目根执行 **`npx vercel dev`**，再打开带 `/form/` 的本地地址测试。
 

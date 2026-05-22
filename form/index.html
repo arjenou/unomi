@@ -3,288 +3,206 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TikTok Shop ライブコマース現状-正直会｜セミナーお申し込み｜株式会社UNOMI</title>
-  <meta name="robots" content="noindex,nofollow" />
-  <link rel="icon" href="/form/unomi-logo.png" type="image/png" />
+  <title>TikTok Shop ライブコマース現状-正直会｜株式会社UNOMI</title>
+  <meta name="description" content="TikTok Shop上陸約1年のライブコマース市場のリアルと、売れる配信・運用体制・広告連携、立ち上げ戦略を株式会社UNOMI CEO・まるが具体例で解説。2026年5月30日（土）東京都内オフライン開催。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #f7f9fa;
-      --card: #fff;
-      --text: #1a1d26;
-      --muted: #62687f;
-      --blue: #0061ff;
-      --blue-hover: #004dcc;
-      --border: #e2e4eb;
-      --radius: 8px;
-    }
+    :root { --blue: #07256c; --accent: #0061ff; --bg: #f7f9fa; --line: #e2e4eb; }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
+    body { margin: 0; font-family: "Noto Sans JP", sans-serif; background: var(--bg); color: #1a1a2e; line-height: 1.6; font-size: 16px; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+    header { margin-bottom: 28px; }
+    header h1 { font-size: 1.35rem; font-weight: 700; color: var(--blue); line-height: 1.45; margin: 0 0 12px; }
+    .meta { font-size: 0.9rem; color: #62687f; }
+    .banner { border-radius: 8px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 4px 24px rgba(7,37,108,.08); }
+    .banner img { display: block; width: 100%; height: auto; }
+    .speaker { display: flex; gap: 20px; align-items: flex-start; background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 32px; border: 1px solid var(--line); }
+    .speaker img { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+    .speaker h2 { margin: 0 0 8px; font-size: 1rem; color: var(--blue); }
+    .speaker .role { font-size: 0.85rem; color: #62687f; margin-bottom: 8px; }
+    section.form-card { background: #fff; border-radius: 8px; padding: 28px 24px 32px; border: 1px solid var(--line); }
+    section.form-card h2 { margin: 0 0 20px; font-size: 1.15rem; color: var(--blue); border-bottom: 2px solid var(--accent); padding-bottom: 12px; }
+    .req { color: #c00; font-size: 0.75rem; margin-left: 6px; vertical-align: middle; }
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: #333; }
+    .field .hint { font-size: 0.8rem; color: #62687f; margin-top: 6px; font-weight: 400; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; font-size: 1rem; border: 1px solid #c6cad8; border-radius: 4px; font-family: inherit;
     }
-    .wrap {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 24px 16px 64px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    header img.hero {
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--radius);
-      display: block;
-      margin: 0 auto 16px;
-    }
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0 0 8px;
-      line-height: 1.45;
-    }
-    .sub {
-      font-size: 0.875rem;
-      color: var(--muted);
-      margin: 0;
-    }
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 24px 20px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-    }
-    h2 {
-      font-size: 1.125rem;
-      margin: 0 0 20px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid var(--blue);
-    }
-    .field {
-      margin-bottom: 20px;
-    }
-    .field label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .req { color: #c00; font-weight: 700; margin-right: 4px; }
-    .hint {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 1rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: #fff;
-    }
-    select { cursor: pointer; }
     textarea { min-height: 100px; resize: vertical; }
-    input:focus, select:focus, textarea:focus {
-      outline: 2px solid rgba(0, 97, 255, 0.35);
-      outline-offset: 1px;
+    input:focus, select:focus, textarea:focus { outline: 2px solid rgba(0,97,255,.35); border-color: var(--accent); }
+    button.submit {
+      width: 100%; margin-top: 8px; padding: 16px; font-size: 1rem; font-weight: 700;
+      background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer;
+      box-shadow: 0 2px 2px rgba(0,0,0,.15);
     }
-    button[type="submit"] {
-      width: 100%;
-      margin-top: 8px;
-      padding: 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      background: var(--blue);
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-    }
-    button[type="submit"]:hover:not(:disabled) { background: var(--blue-hover); }
-    button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
-    .msg {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 4px;
-      font-size: 0.875rem;
-      display: none;
-    }
-    #msg-ok.visible {
-      display: block;
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
-    #msg-err.visible {
-      display: block;
-      background: #ffebee;
-      color: #b71c1c;
-    }
-    footer {
-      margin-top: 32px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    footer a { color: var(--blue); }
+    button.submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .msg { margin-top: 16px; padding: 12px 14px; border-radius: 4px; font-size: 0.95rem; display: none; }
+    .msg.ok { display: block; background: #e8f5e9; color: #1b5e20; }
+    .msg.err { display: block; background: #ffebee; color: #b71c1c; }
+    footer { margin-top: 40px; text-align: center; font-size: 0.8rem; color: #8d96b2; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <img class="hero" src="/form/image.png" width="1080" height="1080" alt="" />
-      <h1>TikTok Shop ライブコマース現状-正直会</h1>
-      <p class="sub">株式会社UNOMI — セミナーお申し込み（本ページのみ。外部サービスへは送信されません）</p>
+      <h1>TikTok Shop 実際どう？ 1年で見えた成果と勝ち筋</h1>
+      <p class="meta">2026年5月30日（土）13:00〜17:00 ／ オフライン（東京都内）／ 株式会社UNOMI</p>
     </header>
 
-    <div class="card">
-      <h2>セミナーお申し込み</h2>
+    <div class="banner">
+      <img src="/form/image.png" width="1080" height="1080" alt="セミナー" loading="lazy" />
+    </div>
+
+    <div class="speaker">
+      <img src="/form/malu.jpeg" width="192" height="192" alt="登壇者 まる" loading="lazy" />
+      <div>
+        <h2>まる</h2>
+        <div class="role">株式会社UNOMI CEO</div>
+        <p style="margin:0;font-size:0.9rem;">TikTok Shop に関する支援・ライブ配信・店舗運用・広告運用の実務を中心にご紹介します。</p>
+      </div>
+    </div>
+
+    <section class="form-card">
+      <h2>セミナーお申し込み<span class="req">●必須</span></h2>
       <form id="seminar-form" novalidate>
         <div class="field">
-          <label for="viewing_date"><span class="req">●</span>必須　視聴期日</label>
-          <select id="viewing_date" name="viewing_date" required>
+          <label for="f-date">視聴・参加希望<span class="req">必須</span></label>
+          <select id="f-date" name="viewing_date" required>
             <option value="">視聴期日を選択してください</option>
-            <option value="2026-05-30（土）13:00〜17:00">2026年5月30日（土）13:00〜17:00</option>
-            <option value="未定・要相談">未定・要相談</option>
+            <option value="2026-05-30">2026年5月30日（土）13:00〜17:00（オフライン・東京都内）</option>
+            <option value="other">上記以外を希望（備考欄に記載）</option>
           </select>
         </div>
         <div class="field">
-          <label for="full_name"><span class="req">●</span>必須　お名前</label>
-          <input type="text" id="full_name" name="full_name" required placeholder="例）山田 花子" autocomplete="name" />
+          <label for="f-name">お名前<span class="req">必須</span></label>
+          <input id="f-name" name="full_name" type="text" required placeholder="例）山田 花子" autocomplete="name" />
         </div>
         <div class="field">
-          <label for="company"><span class="req">●</span>必須　会社名</label>
-          <input type="text" id="company" name="company" required placeholder="例）株式会社UNOMI" autocomplete="organization" />
+          <label for="f-company">会社名<span class="req">必須</span></label>
+          <input id="f-company" name="company" type="text" required placeholder="例）株式会社UNOMI" autocomplete="organization" />
         </div>
         <div class="field">
-          <label for="email"><span class="req">●</span>必須　会社のメールアドレス</label>
-          <input type="email" id="email" name="email" required placeholder="例）contact@unomi-jp.com" autocomplete="email" />
+          <label for="f-email">会社のメールアドレス<span class="req">必須</span></label>
+          <input id="f-email" name="email" type="email" required placeholder="例）contact@example.co.jp" autocomplete="email" />
         </div>
         <div class="field">
-          <label for="phone"><span class="req">●</span>必須　電話番号</label>
-          <input type="tel" id="phone" name="phone" required placeholder="例）0312345678" autocomplete="tel" />
+          <label for="f-phone">電話番号<span class="req">必須</span></label>
+          <input id="f-phone" name="phone" type="tel" required placeholder="例）0312345678" autocomplete="tel" />
           <p class="hint">日中ご連絡可能な携帯番号をご記載ください。</p>
         </div>
         <div class="field">
-          <label for="department"><span class="req">●</span>必須　部署</label>
-          <input type="text" id="department" name="department" required placeholder="例）マーケティング部" />
+          <label for="f-dept">部署<span class="req">必須</span></label>
+          <input id="f-dept" name="department" type="text" required placeholder="例）マーケティング部" />
         </div>
         <div class="field">
-          <label for="job_title"><span class="req">●</span>必須　役職</label>
-          <select id="job_title" name="job_title" required>
+          <label for="f-title">役職<span class="req">必須</span></label>
+          <select id="f-title" name="job_title" required>
             <option value="">選択してください</option>
-            <option value="経営者・役員">経営者・役員</option>
-            <option value="部長・課長クラス">部長・課長クラス</option>
-            <option value="主任・リーダー">主任・リーダー</option>
-            <option value="一般社員">一般社員</option>
-            <option value="その他">その他</option>
+            <option value="executive">経営者・役員</option>
+            <option value="manager">部長・課長クラス</option>
+            <option value="staff">一般社員・担当者</option>
+            <option value="other">その他</option>
           </select>
         </div>
         <div class="field">
-          <label for="ec_status"><span class="req">●</span>必須　貴社のEC事業の運営状況</label>
-          <select id="ec_status" name="ec_status" required>
+          <label for="f-ec">貴社のEC事業の運営状況<span class="req">必須</span></label>
+          <select id="f-ec" name="ec_status" required>
             <option value="">選択してください</option>
-            <option value="自社ECを運営中">自社ECを運営中</option>
-            <option value="モール中心に運営">モール中心に運営</option>
-            <option value="これから本格始動">これから本格始動</option>
-            <option value="ECは未着手">ECは未着手</option>
-            <option value="その他">その他</option>
+            <option value="none">未着手</option>
+            <option value="planning">検討中</option>
+            <option value="running">運用中</option>
+            <option value="scale">拡大フェーズ</option>
           </select>
         </div>
         <div class="field">
-          <label for="referral"><span class="req">●</span>必須　セミナーを知ったきっかけ</label>
-          <select id="referral" name="referral" required>
+          <label for="f-channel">セミナーを知ったきっかけ<span class="req">必須</span></label>
+          <select id="f-channel" name="referral" required>
             <option value="">選択してください</option>
-            <option value="公式サイト">公式サイト</option>
-            <option value="SNS広告">SNS広告</option>
-            <option value="知人・取引先の紹介">知人・取引先の紹介</option>
-            <option value="検索エンジン">検索エンジン</option>
-            <option value="その他">その他</option>
+            <option value="sns">SNS広告</option>
+            <option value="search">検索</option>
+            <option value="referral">ご紹介</option>
+            <option value="mail">メール・ニュースレター</option>
+            <option value="event">イベント・セミナー</option>
+            <option value="other">その他</option>
           </select>
         </div>
         <div class="field">
-          <label for="notes">備考・ご質問（任意）</label>
-          <textarea id="notes" name="notes" placeholder="その他お伝えしたいことがあればご記入ください"></textarea>
+          <label for="f-note">備考・ご質問（任意）</label>
+          <textarea id="f-note" name="note" placeholder="その他ご連絡事項があればご記入ください"></textarea>
         </div>
-        <button type="submit" id="submit-btn">送信する</button>
-        <div id="msg-ok" class="msg" role="status">お申し込みを受け付けました。担当よりご連絡いたします。</div>
-        <div id="msg-err" class="msg" role="alert">送信に失敗しました。時間をおいて再度お試しください。</div>
+        <button type="submit" class="submit" id="f-submit">送信する</button>
+        <div id="f-msg" class="msg" role="status" aria-live="polite"></div>
       </form>
-    </div>
+    </section>
 
-    <footer>
-      <p>© 株式会社UNOMI</p>
-      <p><a href="/">コーポレートサイトへ</a></p>
-    </footer>
+    <footer>© 株式会社UNOMI</footer>
   </div>
 
   <script>
 (function () {
   var form = document.getElementById("seminar-form");
-  var btn = document.getElementById("submit-btn");
-  var ok = document.getElementById("msg-ok");
-  var err = document.getElementById("msg-err");
+  var msg = document.getElementById("f-msg");
+  var btn = document.getElementById("f-submit");
   var api = new URL("/api/seminar-notify", window.location.origin).toString();
 
-  function fieldLabel(id) {
-    var el = document.getElementById(id);
-    if (!el) return id;
-    var lab = document.querySelector('label[for="' + id + '"]');
-    if (!lab) return id;
-    return lab.textContent.replace(/\s+/g, " ").replace(/●/g, "").replace(/必須/g, "").trim();
+  function show(kind, text) {
+    msg.className = "msg " + kind;
+    msg.textContent = text;
   }
 
-  function collect() {
-    var ids = [
-      "viewing_date", "full_name", "company", "email", "phone",
-      "department", "job_title", "ec_status", "referral", "notes"
-    ];
-    return ids.map(function (id) {
-      var el = document.getElementById(id);
-      var v = el ? String(el.value || "").trim() : "";
-      return { label: fieldLabel(id), value: v };
-    });
+  function collectFields() {
+    var fields = [];
+    var els = form.querySelectorAll("input, select, textarea");
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el.type === "submit" || el.disabled) continue;
+      var lab = form.querySelector('label[for="' + el.id + '"]');
+      var label = lab ? lab.textContent.replace(/\s*必須\s*/g, "").replace(/●/g, "").trim() : el.name;
+      var value = el.value;
+      if (el.tagName === "SELECT" && el.selectedIndex >= 0) {
+        var opt = el.options[el.selectedIndex];
+        if (opt && opt.text && value) value = opt.text + "（" + value + "）";
+      }
+      fields.push({ label: label, value: value });
+    }
+    return fields;
   }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    ok.classList.remove("visible");
-    err.classList.remove("visible");
-
+    msg.className = "msg";
+    msg.textContent = "";
     if (!form.reportValidity()) return;
 
-    var fields = collect();
-
+    var fields = collectFields();
     btn.disabled = true;
+
     fetch(api, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         pageUrl: window.location.href,
         pageTitle: document.title,
-        fields: fields
-      })
+        fields: fields,
+      }),
     })
-      .then(function (res) {
-        if (!res.ok) throw new Error("bad status");
-        return res.json();
-      })
-      .then(function () {
-        ok.classList.add("visible");
-        form.reset();
+      .then(function (r) {
+        if (r.ok) {
+          show("ok", "お申し込みを受け付けました。担当よりご連絡いたします。");
+          form.reset();
+          return;
+        }
+        if (r.status === 503) {
+          show("err", "送信システムが未設定です。しばらくしてから再度お試しください。");
+          return;
+        }
+        show("err", "送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
       })
       .catch(function () {
-        err.classList.add("visible");
+        show("err", "送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
       })
       .finally(function () {
         btn.disabled = false;

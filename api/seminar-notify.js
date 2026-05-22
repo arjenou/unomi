@@ -23,6 +23,7 @@ function isAllowedOrigin(origin) {
   if (!origin) return false;
   const list = parseAllowedOrigins();
   if (list.length === 0) {
+    if (/^https?:\/\/localhost(?::\d+)?$/i.test(origin)) return true;
     return (
       /^https:\/\/(www\.)?unomi-jp\.com$/i.test(origin) ||
       (process.env.VERCEL === "1" && /\.vercel\.app$/i.test(origin))
