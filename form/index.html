@@ -665,6 +665,63 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
 #form-sp #f-msg { margin-top: 14px; padding: 12px 14px; border-radius: 4px; font-size: 0.95rem; display: none; }
 #form-sp #f-msg.ok { display: block; background: #e8f5e9; color: #1b5e20; }
 #form-sp #f-msg.err { display: block; background: #ffebee; color: #b71c1c; }
+/* 覆盖 ec-force：父级 line-height:68px + height:52px 会导致「送信する」上下不齐 */
+#form-sp #f-submit-wrap.form-submit_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  line-height: normal;
+  height: auto;
+  min-height: 52px;
+  padding: 14px 48px;
+}
+@media (max-width: 1300px) {
+  #form-sp #f-submit-wrap.form-submit_button {
+    padding: 14px 32px;
+  }
+}
+#form-sp #f-submit.unomi-submit-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  min-height: 44px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.08s ease, opacity 0.2s ease;
+}
+#form-sp #f-submit.unomi-submit-btn:active:not(:disabled) { transform: scale(0.98); }
+#form-sp #f-submit.unomi-submit-btn:disabled { cursor: wait; opacity: 0.92; }
+#form-sp #f-submit-wrap.is-loading { opacity: 0.95; pointer-events: none; }
+#form-sp .unomi-submit-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  color: #fff;
+  line-height: 1;
+}
+#form-sp .unomi-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: unomi-spin 0.65s linear infinite;
+  box-sizing: border-box;
+}
+#form-sp #f-submit-wrap.is-loading .unomi-spinner { display: block; }
+@keyframes unomi-spin { to { transform: rotate(360deg); } }
 </style>
 
 </head>
@@ -904,7 +961,12 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
     <textarea id="f-note" name="note" placeholder="その他ご連絡事項があればご記入ください"></textarea>
   </div>
   <div class="form-submit_button" id="f-submit-wrap" style="cursor:pointer;margin-top:8px;">
-    <button type="submit" id="f-submit" style="all:unset;display:block;width:100%;cursor:pointer;text-align:inherit;"><p>送信する</p></button>
+    <button type="submit" id="f-submit" class="unomi-submit-btn" aria-busy="false">
+      <span class="unomi-submit-row">
+        <span class="unomi-spinner" aria-hidden="true"></span>
+        <span id="f-submit-label">送信する</span>
+      </span>
+    </button>
   </div>
   <div id="f-msg" role="status" aria-live="polite"></div>
 </form>
@@ -924,7 +986,23 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
   if (!form) return;
   var msg = document.getElementById("f-msg");
   var btn = document.getElementById("f-submit");
+  var wrap = document.getElementById("f-submit-wrap");
+  var label = document.getElementById("f-submit-label");
   var api = new URL("/api/seminar-notify", window.location.origin).toString();
+
+  function setSubmitting(on) {
+    if (on) {
+      btn.disabled = true;
+      btn.setAttribute("aria-busy", "true");
+      if (wrap) wrap.classList.add("is-loading");
+      if (label) label.textContent = "送信中…";
+    } else {
+      btn.disabled = false;
+      btn.setAttribute("aria-busy", "false");
+      if (wrap) wrap.classList.remove("is-loading");
+      if (label) label.textContent = "送信する";
+    }
+  }
 
   function show(kind, text) {
     msg.className = kind;
@@ -957,7 +1035,7 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
     msg.style.display = "none";
 
     var fields = collectFields();
-    btn.disabled = true;
+    setSubmitting(true);
 
     fetch(api, {
       method: "POST",
@@ -984,7 +1062,7 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
         show("err", "送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
       })
       .finally(function () {
-        btn.disabled = false;
+        setSubmitting(false);
       });
   });
 })();
