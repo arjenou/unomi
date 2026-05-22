@@ -8,5 +8,11 @@
       "destination": "/form/",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/images/:path*",
+      "destination": "https://ec-force.com/images/:path*"
+    }
   ]
 }

@@ -70,7 +70,7 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 与 **`/api/slack`** 反向代理到 **`https://ec-force.com`**。这是因为镜像的研讨会页在浏览器里仍按「同域」请求 ec-force 的静态资源与 Slack 接口；若不代理，会出现 `select.svg` 等 **404**、Slack **404**。这**不能**解决对 **`api.ec-force.com`** 带 Cookie 的跨域限制（需 ec-force 改 CORS，或改用 **iframe** 嵌入官方页面）。
+根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 反向代理到 **`https://ec-force.com/images/*`**（避免镜像页请求本站 `/images/...` 出现 404）。**`/api/slack`** 由根目录 **`api/slack.js`**（Serverless）转发到 ec-force，而不是 `rewrites`。这**不能**解决浏览器直连 **`https://api.ec-force.com`** 时的跨域 + `credentials` 限制（需 ec-force 改 CORS，或改用 **iframe** 嵌入官方页面）。
 
 ---
 
@@ -88,9 +88,11 @@
 | `SMTP_USER` / `SMTP_PASS` | 认证账号与密码或应用专用密码 |
 | `SMTP_FROM` | 发件人地址（可选，未设则用 `SMTP_USER`） |
 | `SEMINAR_NOTIFY_CC` | 可选，抄送（逗号分隔）；主收件人固定为 **`HBY@unomi-jp.com`** |
-| `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`，以及在 Vercel 上部署时的 **`*.vercel.app`** 预览域名 |
+| `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`、Vercel 预览 **`*.vercel.app`**，以及 **`http://127.0.0.1:*` / `http://localhost:*`**（便于 `vercel dev`） |
 
 若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，前端静默忽略，不影响访客继续填写。
+
+**不要用 VS Code Live Server（如 `http://127.0.0.1:5500`）测整页表单**：该环境没有本仓库的 **`/api/slack` 代理**与 **`/api/seminar-notify`**，会出现 **`/api/slack` 405**；对 **`https://api.ec-force.com/api/v1/token`** 的跨域 + `credentials` 限制是 ec-force 侧策略，**任意非 ec-force 域名**（含本地）都会报 CORS，无法在本仓库单独消除。本地请用项目根目录执行 **`npx vercel dev`**，再打开终端里给出的 **`http://localhost:3000/form/`**（端口以实际为准）进行联调。
 
 本地联调：复制根目录 **`.env.example`** 为 **`.env.local`**，在项目根执行 **`npx vercel dev`**，再打开带 `/form/` 的本地地址测试。
 

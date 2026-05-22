@@ -23,10 +23,12 @@ function isAllowedOrigin(origin) {
   if (!origin) return false;
   const list = parseAllowedOrigins();
   if (list.length === 0) {
-    return (
-      /^https:\/\/(www\.)?unomi-jp\.com$/i.test(origin) ||
-      (process.env.VERCEL === "1" && /\.vercel\.app$/i.test(origin))
-    );
+    if (/^https:\/\/(www\.)?unomi-jp\.com$/i.test(origin)) return true;
+    if (process.env.VERCEL === "1" && /\.vercel\.app$/i.test(origin))
+      return true;
+    // 本地 vercel dev / Live Server 等（仅开发；生产仍建议设 SEMINAR_ALLOWED_ORIGINS）
+    if (/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(origin)) return true;
+    return false;
   }
   return list.some((o) => origin === o);
 }
