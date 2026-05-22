@@ -76,7 +76,7 @@
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`HBY@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。
+`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`hby@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
@@ -87,7 +87,7 @@
 | `SMTP_SECURE` | `true` / `false`；端口 `465` 时多为 `true` |
 | `SMTP_USER` / `SMTP_PASS` | 认证账号与密码或应用专用密码 |
 | `SMTP_FROM` | 发件人地址（可选，未设则用 `SMTP_USER`） |
-| `SEMINAR_NOTIFY_CC` | 可选，抄送（逗号分隔）；主收件人固定为 **`HBY@unomi-jp.com`** |
+| `SEMINAR_NOTIFY_CC` | 可选，抄送（逗号分隔）；主收件人固定为 **`hby@unomi-jp.com`** |
 | `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`、Vercel 预览 **`*.vercel.app`**，以及 **`http://127.0.0.1:*` / `http://localhost:*`**（便于 `vercel dev`） |
 
 若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，页面会提示送信系统未配置。

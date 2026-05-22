@@ -105,7 +105,7 @@ module.exports = async (req, res) => {
   });
 
   /** 申込内容の受信先（固定） */
-  const to = "HBY@unomi-jp.com";
+  const to = "hby@unomi-jp.com";
   const from = process.env.SMTP_FROM || user;
   const ccRaw = process.env.SEMINAR_NOTIFY_CC || "";
   const cc = ccRaw
