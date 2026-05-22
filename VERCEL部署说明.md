@@ -70,6 +70,8 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
+根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 与 **`/api/slack`** 反向代理到 **`https://ec-force.com`**。这是因为镜像的研讨会页在浏览器里仍按「同域」请求 ec-force 的静态资源与 Slack 接口；若不代理，会出现 `select.svg` 等 **404**、Slack **404**。这**不能**解决对 **`api.ec-force.com`** 带 Cookie 的跨域限制（需 ec-force 改 CORS，或改用 **iframe** 嵌入官方页面）。
+
 ---
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
