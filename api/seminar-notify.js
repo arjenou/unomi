@@ -5,7 +5,7 @@
  * Vercel Project → Settings → Environment Variables:
  *   SMTP_HOST, SMTP_PORT (default 587), SMTP_SECURE (true|false),
  *   SMTP_USER, SMTP_PASS, SMTP_FROM (optional, defaults to SMTP_USER),
- *   SEMINAR_NOTIFY_TO (default HBY@unomi-jp.com),
+ *   SEMINAR_NOTIFY_CC (optional comma-separated extra recipients),
  *   SEMINAR_ALLOWED_ORIGINS (comma-separated, e.g. https://www.unomi-jp.com)
  */
 
@@ -23,7 +23,6 @@ function isAllowedOrigin(origin) {
   if (!origin) return false;
   const list = parseAllowedOrigins();
   if (list.length === 0) {
-    if (/^https?:\/\/localhost(?::\d+)?$/i.test(origin)) return true;
     return (
       /^https:\/\/(www\.)?unomi-jp\.com$/i.test(origin) ||
       (process.env.VERCEL === "1" && /\.vercel\.app$/i.test(origin))
@@ -40,6 +39,14 @@ function setCors(res, origin) {
     res.setHeader("Access-Control-Max-Age", "86400");
   }
   res.setHeader("Vary", "Origin");
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 module.exports = async (req, res) => {
@@ -95,14 +102,23 @@ module.exports = async (req, res) => {
     auth: { user, pass },
   });
 
-  const to = process.env.SEMINAR_NOTIFY_TO || "HBY@unomi-jp.com";
+  /** 申込内容の受信先（固定） */
+  const to = "HBY@unomi-jp.com";
   const from = process.env.SMTP_FROM || user;
+  const ccRaw = process.env.SEMINAR_NOTIFY_CC || "";
+  const cc = ccRaw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((e) => e.toLowerCase() !== to.toLowerCase());
 
-  const lines = fields.map(({ label, value }) => {
+  const rows = fields.map(({ label, value }) => {
     const l = String(label || "").replace(/\s+/g, " ").trim();
     const v = value == null ? "" : String(value);
-    return `${l}: ${v}`;
+    return { label: l, value: v };
   });
+
+  const lines = rows.map(({ label, value }) => `${label}: ${value}`);
 
   const footer = [
     "",
@@ -114,12 +130,32 @@ module.exports = async (req, res) => {
 
   const text = lines.join("\n") + "\n" + footer;
 
+  const htmlRows = rows
+    .map(
+      ({ label, value }) =>
+        `<tr><th align="left" style="padding:8px;border:1px solid #ccc;">${escapeHtml(
+          label
+        )}</th><td style="padding:8px;border:1px solid #ccc;">${escapeHtml(
+          value
+        )}</td></tr>`
+    )
+    .join("");
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>
+<p>セミナーお申し込みフォームの送信内容です。</p>
+<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">${htmlRows}</table>
+<pre style="margin-top:16px;font-size:12px;color:#444;">${escapeHtml(
+    footer
+  )}</pre>
+</body></html>`;
+
   try {
     await transporter.sendMail({
       from,
       to,
+      cc: cc.length ? cc.join(", ") : undefined,
       subject: `[セミナーお申し込み] ${body.pageTitle || "UNOMI"}`,
       text,
+      html,
     });
   } catch (e) {
     console.error("seminar-notify sendMail:", e);
