@@ -1054,14 +1054,17 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
               return {};
             })
             .then(function (data) {
-              var q =
-                data && data.confirmationSent === false ? "?m=no-confirm" : "";
-              window.location.assign(
-                new URL(
-                  "/form/thanks.html" + q,
-                  window.location.origin
-                ).href
-              );
+              var okMsg =
+                "お申し込みを受け付けました。ご入力いただいた会社のメールアドレス宛に確認メール（自動送信）をお送りしています。担当よりご連絡いたします。";
+              if (data && data.confirmationSent === false) {
+                okMsg =
+                  "お申し込みを受け付けました。確認メールの送信に失敗した可能性があります。迷惑メールフォルダをご確認のうえ、届かない場合は info@unomi-jp.com までお問い合わせください。担当よりご連絡いたします。";
+              }
+              show("ok", okMsg);
+              form.reset();
+              try {
+                msg.scrollIntoView({ behavior: "smooth", block: "nearest" });
+              } catch (e) {}
             });
         }
         if (r.status === 503) {
