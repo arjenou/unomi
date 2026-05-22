@@ -70,13 +70,13 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-**`/form/`** 现为 **自研静态页 + 原生表单**，提交时仅 **`fetch` 本站 `/api/seminar-notify`**，**不再加载** ec-force 的 Next/GraphQL，因此不会出现 **`api.ec-force.com` CORS** 或 **`/api/slack`** 依赖。根目录 **`vercel.json`** 的 **`rewrites`** 仍可将本站 **`/images/*`** 代理到 **`https://ec-force.com/images/*`**（若其它页面仍引用该路径）；与表单无关。
+**`/form/`** 为 **静态页**：正文（议程、概要、推荐对象、登壇者等）来自 ec-force 页面导出数据中的 HTML 片段，**不加载** ec-force 的 Next/GraphQL；仅保留 **ec-force 的 CSS（外链 + 内联 styled）** 以还原版式。表单为 **自建 `<form>`**，仅 **`fetch` 本站 `/api/seminar-notify`**，无 **`api.ec-force.com` CORS** 依赖。根目录 **`vercel.json`** 的 **`/images/*` → ec-force** 的 rewrite 仍可用于站内对 `/images/...` 的引用。
 
 ---
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 为 **自研 HTML 表单**：用户点击 **「送信する」** 并通过校验后，由页面内脚本将各字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`HBY@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。无需 ec-force 脚本，也不依赖 **`/api/slack`**。
+`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`HBY@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
