@@ -70,13 +70,13 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 反向代理到 **`https://ec-force.com/images/*`**（避免镜像页请求本站 `/images/...` 出现 404）。**`/api/slack`** 由 **`api/slack.js`**（Serverless）转发到 ec-force。对 **`https://api.ec-force.com/api/v1/token`**：ec-force 的打包脚本会发起该请求；`form/index.html` 在 **`<head>` 最前**有 **`fetch` 补丁**，仅对该 URL 将 **`credentials` 设为 `omit`**，以便在对方返回 **`Access-Control-Allow-Origin: *`** 时通过浏览器 CORS（脚本里若用 `include` 会触发你看到的报错）。若仍失败，只能 **iframe 嵌官方 ec-force 页** 或请对方改 CORS。
+**`/form/`** 现为 **自研静态页 + 原生表单**，提交时仅 **`fetch` 本站 `/api/seminar-notify`**，**不再加载** ec-force 的 Next/GraphQL，因此不会出现 **`api.ec-force.com` CORS** 或 **`/api/slack`** 依赖。根目录 **`vercel.json`** 的 **`rewrites`** 仍可将本站 **`/images/*`** 代理到 **`https://ec-force.com/images/*`**（若其它页面仍引用该路径）；与表单无关。
 
 ---
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 研讨会页在点击 **送信** 类按钮（`.form-submit_button`）约 **1.2 秒**后，会把 `#form-sp` 内输入项（**表示中の input / select / textarea** および **name 付き hidden**）的快照 **POST** 到 **`/api/seminar-notify`**，由服务端 **nodemailer** 发到 **`HBY@unomi-jp.com`（固定）**；可选环境变量 **`SEMINAR_NOTIFY_CC`** 用于同封 **抄送** 其他邮箱（逗号分隔）。该请求与页面原有的 ec-force 提交流程并行，**不拦截**原站点逻辑。
+`/form/` 为 **自研 HTML 表单**：用户点击 **「送信する」** 并通过校验后，由页面内脚本将各字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`HBY@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。无需 ec-force 脚本，也不依赖 **`/api/slack`**。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
@@ -90,11 +90,9 @@
 | `SEMINAR_NOTIFY_CC` | 可选，抄送（逗号分隔）；主收件人固定为 **`HBY@unomi-jp.com`** |
 | `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`、Vercel 预览 **`*.vercel.app`**，以及 **`http://127.0.0.1:*` / `http://localhost:*`**（便于 `vercel dev`） |
 
-若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，前端静默忽略，不影响访客继续填写。
+若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，页面会提示送信系统未配置。
 
-**不要用 VS Code Live Server（如 `http://127.0.0.1:5500`）测整页表单**：该环境没有本仓库的 **`/api/slack` 代理**与 **`/api/seminar-notify`**，会出现 **`/api/slack` 405**；对 **`https://api.ec-force.com/api/v1/token`** 的跨域 + `credentials` 限制是 ec-force 侧策略，**任意非 ec-force 域名**（含本地）都会报 CORS，无法在本仓库单独消除。本地请用项目根目录执行 **`npx vercel dev`**，再打开终端里给出的 **`http://localhost:3000/form/`**（端口以实际为准）进行联调。
-
-本地联调：复制根目录 **`.env.example`** 为 **`.env.local`**，在项目根执行 **`npx vercel dev`**，再打开带 `/form/` 的本地地址测试。
+**本地联调**：VS Code Live Server（`http://127.0.0.1:5500`）**无法**提供 **`/api/seminar-notify`**，请在项目根执行 **`npx vercel dev`** 后打开终端给出的地址下的 **`/form/`**。复制根目录 **`.env.example`** 为 **`.env.local`** 并填入 SMTP 即可测发信。
 
 ---
 
