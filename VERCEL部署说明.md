@@ -68,6 +68,30 @@
 
 若你希望构建产物中的 **源码浏览路径**（如 `/_src`）策略与团队默认一致，可在 Vercel 文档中查阅 **Build Logs and Source Protection**，按需调整；与「整站访客认证页」不是同一类设置。
 
+本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
+
+---
+
+## 5.1 /form セミナー申込メール（API + nodemailer）
+
+`/form/` 研讨会页在点击 **送信** 类按钮（`.form-submit_button`）约 0.5 秒后，会把 `#form-sp` 内可见输入项的快照 **POST** 到 **`/api/seminar-notify`**，由服务端 **nodemailer** 发到 **`HBY@unomi-jp.com`**（可用环境变量 `SEMINAR_NOTIFY_TO` 覆盖）。该请求与页面原有的 ec-force 提交流程并行，**不拦截**原站点逻辑。
+
+在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
+
+| 变量名 | 说明 |
+|--------|------|
+| `SMTP_HOST` | SMTP 主机 |
+| `SMTP_PORT` | 端口，默认 `587` |
+| `SMTP_SECURE` | `true` / `false`；端口 `465` 时多为 `true` |
+| `SMTP_USER` / `SMTP_PASS` | 认证账号与密码或应用专用密码 |
+| `SMTP_FROM` | 发件人地址（可选，未设则用 `SMTP_USER`） |
+| `SEMINAR_NOTIFY_TO` | 收件人（可选，默认 `HBY@unomi-jp.com`） |
+| `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`，以及在 Vercel 上部署时的 **`*.vercel.app`** 预览域名 |
+
+若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，前端静默忽略，不影响访客继续填写。
+
+本地联调：复制根目录 **`.env.example`** 为 **`.env.local`**，在项目根执行 **`npx vercel dev`**，再打开带 `/form/` 的本地地址测试。
+
 ---
 
 ## 6. 自检清单（保存前打勾）
