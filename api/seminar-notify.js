@@ -201,24 +201,38 @@ module.exports = async (req, res) => {
     applicant.toLowerCase() !== to.toLowerCase()
   ) {
     const seminarTitle = body.pageTitle || "セミナー";
-    const confirmSubject = `[UNOMI] お申し込みを受け付けました（${seminarTitle}）`;
-    const confirmText = [
-      "このメールは、セミナーお申し込みフォームから送信いただいた内容を受け付けた通知です（自動送信）。",
-      "",
-      "お申し込みありがとうございました。内容を確認のうえ、担当より改めてご連絡いたします。",
-      "",
-      "---",
-      `イベント: ${seminarTitle}`,
-      `受付: ${new Date().toISOString()}`,
-    ].join("\n");
+    const confirmSubject = `[UNOMI] セミナーお申し込みの確認（自動送信）`;
+
+    const confirmLetter =
+      "この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。\n\n" +
+      "お申し込みを確認いたしました。\n\n" +
+      "当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。\n\n" +
+      "皆様にお会いできることを、心より楽しみにしております。\n\n" +
+      "引き続き、どうぞよろしくお願いいたします。\n\n" +
+      "株式会社UNOMI";
+
+    const confirmText =
+      confirmLetter +
+      "\n\n---\n【お申し込み内容】\n" +
+      lines.join("\n") +
+      "\n\n---\n" +
+      `イベント: ${seminarTitle}\n受付: ${new Date().toISOString()}\n\n※本メールは送信専用の自動通知です。`;
+
     const confirmHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>
-<p>このメールは、セミナーお申し込みフォームから送信いただいた内容を<strong>受け付けた通知</strong>です（自動送信）。</p>
-<p>お申し込みありがとうございました。内容を確認のうえ、担当より改めてご連絡いたします。</p>
+<p>この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。</p>
+<p>お申し込みを確認いたしました。</p>
+<p>当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。</p>
+<p>皆様にお会いできることを、心より楽しみにしております。</p>
+<p>引き続き、どうぞよろしくお願いいたします。</p>
+<p>株式会社UNOMI</p>
+<hr style="border:none;border-top:1px solid #e2e4eb;margin:24px 0;" />
+<p style="font-weight:bold;margin-bottom:8px;">お申し込み内容</p>
+<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">${htmlRows}</table>
 <p style="margin-top:16px;font-size:12px;color:#666;">${escapeHtml(
       seminarTitle
     )}<br>${escapeHtml(
       new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
-    )}（受付）</p>
+    )}（受付）<br><span style="color:#888;">※本メールは送信専用の自動通知です。</span></p>
 </body></html>`;
     try {
       await transporter.sendMail({
