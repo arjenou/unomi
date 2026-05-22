@@ -70,13 +70,13 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 与 **`/api/slack`** 反向代理到 **`https://ec-force.com`**。这是因为镜像的研讨会页在浏览器里仍按「同域」请求 ec-force 的静态资源与 Slack 接口；若不代理，会出现 `select.svg` 等 **404**、Slack **404**。这**不能**解决对 **`api.ec-force.com`** 带 Cookie 的跨域限制（需 ec-force 改 CORS，或改用 **iframe** 嵌入官方页面）。
+`/form/` 为 **自社静的フォーム** のみ。送信内容は **当該 API 経由でメール** され、**ec-force 等の外部 API は使用しません**。
 
 ---
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 研讨会页在点击 **送信** 类按钮（`.form-submit_button`）约 0.5 秒后，会把 `#form-sp` 内可见输入项的快照 **POST** 到 **`/api/seminar-notify`**，由服务端 **nodemailer** 发到 **`HBY@unomi-jp.com`**（可用环境变量 `SEMINAR_NOTIFY_TO` 覆盖）。该请求与页面原有的 ec-force 提交流程并行，**不拦截**原站点逻辑。
+`/form/` のフォーム送信時、ブラウザが **`/api/seminar-notify`** に JSON を **POST** し、サーバー側の **nodemailer** で **`HBY@unomi-jp.com`**（環境変数 `SEMINAR_NOTIFY_TO` で変更可）に届きます。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
@@ -90,7 +90,7 @@
 | `SEMINAR_NOTIFY_TO` | 收件人（可选，默认 `HBY@unomi-jp.com`） |
 | `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`，以及在 Vercel 上部署时的 **`*.vercel.app`** 预览域名 |
 
-若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，前端静默忽略，不影响访客继续填写。
+若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，画面上会表示送信失敗。
 
 本地联调：复制根目录 **`.env.example`** 为 **`.env.local`**，在项目根执行 **`npx vercel dev`**，再打开带 `/form/` 的本地地址测试。
 

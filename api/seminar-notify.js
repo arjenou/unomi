@@ -41,30 +41,6 @@ function setCors(res, origin) {
   res.setHeader("Vary", "Origin");
 }
 
-function labelForInput(root, el) {
-  if (el.labels && el.labels.length) return el.labels[0].textContent.trim();
-  const id = el.id;
-  if (id) {
-    const esc = String(id).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-    const lbl = root.querySelector(`label[for="${esc}"]`);
-    if (lbl) return lbl.textContent.replace(/\s+/g, " ").trim();
-  }
-  let node = el.parentElement;
-  for (let i = 0; i < 6 && node; i++) {
-    const prev = node.previousElementSibling;
-    if (prev && prev.tagName === "LABEL") {
-      return prev.textContent.replace(/\s+/g, " ").trim();
-    }
-    const pl = node.closest("div");
-    if (pl) {
-      const l = pl.querySelector(":scope > label");
-      if (l) return l.textContent.replace(/\s+/g, " ").trim();
-    }
-    node = node.parentElement;
-  }
-  return el.name || el.placeholder || el.id || "(項目)";
-}
-
 module.exports = async (req, res) => {
   const origin = req.headers.origin || "";
 
