@@ -92,6 +92,21 @@
 
 若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，页面会提示送信系统未配置。
 
+### 502 + `Send failed`（SMTP 已配但发信失败）
+
+说明 **`nodemailer.sendMail` 抛错**：请求已到达 Serverless，CORS 与 JSON 校验通过，**问题在邮服连接或认证**。请在 Vercel → 该项目 → **Deployments** → 选最新生产部署 → **Functions** / **Runtime Logs**，搜索 **`seminar-notify sendMail`** 查看完整错误栈。
+
+常见原因与处理：
+
+| 现象 / 返回 JSON 中的 `code` | 建议 |
+|------------------------------|------|
+| **`EAUTH`** / `535` | 账号或密码错误；若用 Gmail / Google Workspace，需 **应用专用密码**，不能只用普通登录密码。 |
+| **`ECONNECTION`** / **`ETIMEDOUT`** | 主机名或端口错误；防火墙或邮服 **拒绝 Vercel 出口 IP**（少数企业 SMTP 会拦）；换支持 Serverless 的 SMTP（如 SendGrid、Resend、Amazon SES、Postmark 等）或向邮服开通发信。 |
+| **`ESOCKET` / TLS** | `SMTP_PORT` 与 **`SMTP_SECURE`** 不匹配：587 多为 `SMTP_SECURE=false`（STARTTLS）；465 多为 `true` 且 `secure: true`。 |
+| **`SMTP_FROM` 被拒** | 部分邮服要求 **发件人域名与认证账号一致**；在环境变量里把 `SMTP_FROM` 设为邮服允许的 From（或与 `SMTP_USER` 同域）。 |
+
+部署更新后，若仍返回 502，响应体可能包含 **`code`**、**`responseCode`**（不含密码），便于与邮服文档对照。
+
 **本地联调**：VS Code Live Server（`http://127.0.0.1:5500`）**无法**提供 **`/api/seminar-notify`**，请在项目根执行 **`npx vercel dev`** 后打开终端给出的地址下的 **`/form/`**。复制根目录 **`.env.example`** 为 **`.env.local`** 并填入 SMTP 即可测发信。
 
 ---

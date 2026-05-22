@@ -161,7 +161,11 @@ module.exports = async (req, res) => {
     });
   } catch (e) {
     console.error("seminar-notify sendMail:", e);
-    return res.status(502).json({ error: "Send failed" });
+    const out = { error: "Send failed" };
+    if (e && typeof e.code === "string") out.code = e.code;
+    if (e && typeof e.responseCode === "number") out.responseCode = e.responseCode;
+    if (e && typeof e.command === "string") out.command = e.command;
+    return res.status(502).json(out);
   }
 
   return res.status(200).json({ ok: true });
