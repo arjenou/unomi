@@ -76,7 +76,9 @@
 
 ## 5.1 /form セミナー申込メール（API + nodemailer）
 
-`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`hby@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。成功后会向表单中 **「会社のメールアドレス」** 解析出的地址再发一封 **确认邮件（自动送信）**；成功时在 **同页 `#f-msg`** 显示日文提示（若确认邮件未发出则文案会提示联系事務局）。
+`/form/` 页面内脚本在用户提交 **「送信する」** 后，将表单字段整理为 **`fields` 数组**，**POST JSON** 到 **`/api/seminar-notify`**，由 **nodemailer** 发到 **`hby@unomi-jp.com`（固定）**；可选 **`SEMINAR_NOTIFY_CC`** 抄送。成功后会向表单中 **「会社のメールアドレス」** 解析出的地址再发一封 **确认邮件（自动送信）**；成功时在 **同页 `#f-msg`** 显示日文提示。
+
+**Vercel 生产/预览（`VERCEL=1`）**：接口依赖 **`@vercel/functions` 的 `waitUntil`**，校验通过后先返回 **HTTP 202** + `{ ok, accepted }`，**SMTP 在后台继续执行**，缩短浏览器等待；发信失败时用户端已显示成功，请用日志 **`seminar-notify background deliver failed`** 排查。设置 **`SEMINAR_MAIL_SYNC=true`** 可改回 **同步发信**（返回 200 与 `confirmationSent`，便于联调）。**非 Vercel 环境**（或未安装该包）仍为同步逻辑。
 
 在 Vercel → **Settings** → **Environment Variables** 中配置 SMTP（示例名，按你的邮服文档填写）：
 
@@ -89,6 +91,7 @@
 | `SMTP_FROM` | 发件人地址（可选，未设则用 `SMTP_USER`） |
 | `SEMINAR_NOTIFY_CC` | 可选，抄送（逗号分隔）；主收件人固定为 **`hby@unomi-jp.com`** |
 | `SEMINAR_ALLOWED_ORIGINS` | 可选，逗号分隔的浏览器 `Origin` 白名单；**不填**时允许 `https://www.unomi-jp.com`、`https://unomi-jp.com`、Vercel 预览 **`*.vercel.app`**，以及 **`http://127.0.0.1:*` / `http://localhost:*`**（便于 `vercel dev`） |
+| `SEMINAR_MAIL_SYNC` | 可选，设为 **`true`** 时在 Vercel 上也 **同步** 发完邮件再响应（默认异步 **202**） |
 
 若未配置 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`，API 返回 **503**，页面会提示送信系统未配置。
 

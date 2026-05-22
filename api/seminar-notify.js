@@ -10,9 +10,20 @@
  *
  * On success, sends a second confirmation email to the applicant address parsed
  * from the field whose label contains 会社 + メール (会社のメールアドレス).
+ *
+ * On Vercel (VERCEL=1), mail is sent inside waitUntil(@vercel/functions) so the
+ * HTTP response returns 202 immediately; use SEMINAR_MAIL_SYNC=true to force
+ * synchronous sends (e.g. debugging).
  */
 
 const nodemailer = require("nodemailer");
+
+let waitUntilFn = null;
+try {
+  waitUntilFn = require("@vercel/functions").waitUntil;
+} catch (_) {
+  /* optional dep path — should not happen after npm install */
+}
 
 function parseAllowedOrigins() {
   const raw = process.env.SEMINAR_ALLOWED_ORIGINS || "";
@@ -75,6 +86,87 @@ function findApplicantEmail(rows) {
     }
   }
   return "";
+}
+
+/**
+ * Internal notify + applicant confirmation. Throws if internal sendMail fails.
+ * @returns {{ confirmationSent: boolean }}
+ */
+async function deliverSeminarMail({
+  transporter,
+  from,
+  to,
+  cc,
+  body,
+  text,
+  html,
+  lines,
+  htmlRows,
+  rows,
+}) {
+  await transporter.sendMail({
+    from,
+    to,
+    cc: cc.length ? cc.join(", ") : undefined,
+    subject: `[セミナーお申し込み] ${body.pageTitle || "UNOMI"}`,
+    text,
+    html,
+  });
+
+  let confirmationSent = false;
+  const applicant = findApplicantEmail(rows);
+  if (applicant && applicant.toLowerCase() !== to.toLowerCase()) {
+    const seminarTitle = body.pageTitle || "セミナー";
+    const confirmSubject = `[UNOMI] セミナーお申し込みの確認（自動送信）`;
+
+    const confirmLetter =
+      "この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。\n\n" +
+      "お申し込みを確認いたしました。\n\n" +
+      "当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。\n\n" +
+      "皆様にお会いできることを、心より楽しみにしております。\n\n" +
+      "引き続き、どうぞよろしくお願いいたします。\n\n" +
+      "株式会社UNOMI";
+
+    const confirmText =
+      confirmLetter +
+      "\n\n---\n【お申し込み内容】\n" +
+      lines.join("\n") +
+      "\n\n---\n" +
+      `イベント: ${seminarTitle}\n受付: ${new Date().toISOString()}\n\n※本メールは送信専用の自動通知です。`;
+
+    const confirmHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>
+<p>この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。</p>
+<p>お申し込みを確認いたしました。</p>
+<p>当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。</p>
+<p>皆様にお会いできることを、心より楽しみにしております。</p>
+<p>引き続き、どうぞよろしくお願いいたします。</p>
+<p>株式会社UNOMI</p>
+<hr style="border:none;border-top:1px solid #e2e4eb;margin:24px 0;" />
+<p style="font-weight:bold;margin-bottom:8px;">お申し込み内容</p>
+<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">${htmlRows}</table>
+<p style="margin-top:16px;font-size:12px;color:#666;">${escapeHtml(
+      seminarTitle
+    )}<br>${escapeHtml(
+      new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
+    )}（受付）<br><span style="color:#888;">※本メールは送信専用の自動通知です。</span></p>
+</body></html>`;
+    try {
+      await transporter.sendMail({
+        from,
+        to: applicant,
+        subject: confirmSubject,
+        text: confirmText,
+        html: confirmHtml,
+      });
+      confirmationSent = true;
+    } catch (e) {
+      console.error("seminar-notify confirmation sendMail:", e);
+    }
+  } else if (applicant && applicant.toLowerCase() === to.toLowerCase()) {
+    confirmationSent = true;
+  }
+
+  return { confirmationSent };
 }
 
 module.exports = async (req, res) => {
@@ -176,79 +268,43 @@ module.exports = async (req, res) => {
   )}</pre>
 </body></html>`;
 
+  const mailPayload = {
+    transporter,
+    from,
+    to,
+    cc,
+    body,
+    text,
+    html,
+    lines,
+    htmlRows,
+    rows,
+  };
+
+  const useBackground =
+    typeof waitUntilFn === "function" &&
+    process.env.VERCEL === "1" &&
+    process.env.SEMINAR_MAIL_SYNC !== "true";
+
+  if (useBackground) {
+    waitUntilFn(
+      deliverSeminarMail(mailPayload).catch((e) => {
+        console.error("seminar-notify background deliver failed:", e);
+      })
+    );
+    return res.status(202).json({ ok: true, accepted: true });
+  }
+
   try {
-    await transporter.sendMail({
-      from,
-      to,
-      cc: cc.length ? cc.join(", ") : undefined,
-      subject: `[セミナーお申し込み] ${body.pageTitle || "UNOMI"}`,
-      text,
-      html,
-    });
+    const { confirmationSent } = await deliverSeminarMail(mailPayload);
+    return res.status(200).json({ ok: true, confirmationSent });
   } catch (e) {
     console.error("seminar-notify sendMail:", e);
     const out = { error: "Send failed" };
     if (e && typeof e.code === "string") out.code = e.code;
-    if (e && typeof e.responseCode === "number") out.responseCode = e.responseCode;
+    if (e && typeof e.responseCode === "number")
+      out.responseCode = e.responseCode;
     if (e && typeof e.command === "string") out.command = e.command;
     return res.status(502).json(out);
   }
-
-  let confirmationSent = false;
-  const applicant = findApplicantEmail(rows);
-  if (
-    applicant &&
-    applicant.toLowerCase() !== to.toLowerCase()
-  ) {
-    const seminarTitle = body.pageTitle || "セミナー";
-    const confirmSubject = `[UNOMI] セミナーお申し込みの確認（自動送信）`;
-
-    const confirmLetter =
-      "この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。\n\n" +
-      "お申し込みを確認いたしました。\n\n" +
-      "当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。\n\n" +
-      "皆様にお会いできることを、心より楽しみにしております。\n\n" +
-      "引き続き、どうぞよろしくお願いいたします。\n\n" +
-      "株式会社UNOMI";
-
-    const confirmText =
-      confirmLetter +
-      "\n\n---\n【お申し込み内容】\n" +
-      lines.join("\n") +
-      "\n\n---\n" +
-      `イベント: ${seminarTitle}\n受付: ${new Date().toISOString()}\n\n※本メールは送信専用の自動通知です。`;
-
-    const confirmHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>
-<p>この度は、株式会社UNOMI主催セミナーへお申し込みいただき、誠にありがとうございます。</p>
-<p>お申し込みを確認いたしました。</p>
-<p>当日の詳細情報（受付方法・会場案内・ご参加に関するご連絡等）につきましては、後日あらためて個別にメールにてご案内させていただきますので、今しばらくお待ちくださいませ。</p>
-<p>皆様にお会いできることを、心より楽しみにしております。</p>
-<p>引き続き、どうぞよろしくお願いいたします。</p>
-<p>株式会社UNOMI</p>
-<hr style="border:none;border-top:1px solid #e2e4eb;margin:24px 0;" />
-<p style="font-weight:bold;margin-bottom:8px;">お申し込み内容</p>
-<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">${htmlRows}</table>
-<p style="margin-top:16px;font-size:12px;color:#666;">${escapeHtml(
-      seminarTitle
-    )}<br>${escapeHtml(
-      new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
-    )}（受付）<br><span style="color:#888;">※本メールは送信専用の自動通知です。</span></p>
-</body></html>`;
-    try {
-      await transporter.sendMail({
-        from,
-        to: applicant,
-        subject: confirmSubject,
-        text: confirmText,
-        html: confirmHtml,
-      });
-      confirmationSent = true;
-    } catch (e) {
-      console.error("seminar-notify confirmation sendMail:", e);
-    }
-  } else if (applicant && applicant.toLowerCase() === to.toLowerCase()) {
-    confirmationSent = true;
-  }
-
-  return res.status(200).json({ ok: true, confirmationSent });
 };

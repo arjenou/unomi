@@ -1048,14 +1048,23 @@ data-styled.g18[id="style__DividerStyle-sc-dza827-0"]{content:"jOGoAE,"}/*!sc*/
     })
       .then(function (r) {
         if (r.ok) {
+          var optimistic =
+            "お申し込みを受け付けました。ご入力いただいた会社のメールアドレス宛に確認メール（自動送信）を順次お送りします（届くまで数分かかる場合があります）。担当よりご連絡いたします。";
+          if (r.status === 202) {
+            show("ok", optimistic);
+            form.reset();
+            try {
+              msg.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            } catch (e) {}
+            return;
+          }
           return r
             .json()
             .catch(function () {
               return {};
             })
             .then(function (data) {
-              var okMsg =
-                "お申し込みを受け付けました。ご入力いただいた会社のメールアドレス宛に確認メール（自動送信）をお送りしています。担当よりご連絡いたします。";
+              var okMsg = optimistic;
               if (data && data.confirmationSent === false) {
                 okMsg =
                   "お申し込みを受け付けました。確認メールの送信に失敗した可能性があります。迷惑メールフォルダをご確認のうえ、届かない場合は info@unomi-jp.com までお問い合わせください。担当よりご連絡いたします。";
