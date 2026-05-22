@@ -1,6 +1,7 @@
 /**
- * Same-origin proxy: POST /api/slack → https://ec-force.com/api/slack
- * The mirrored form calls `/api/slack` on the current host; Live Server (5500) has no proxy — use `vercel dev`.
+ * Same-origin proxy: /api/slack → https://ec-force.com/api/slack
+ * Mirrored ec-force client posts to current host; avoid copying upstream
+ * headers that break Node's res.setHeader (caused 500 in production).
  */
 
 const UPSTREAM = "https://ec-force.com/api/slack";
@@ -59,16 +60,6 @@ module.exports = async (req, res) => {
     const buf = Buffer.from(await upstream.arrayBuffer());
     const ct = upstream.headers.get("content-type");
     if (ct) res.setHeader("Content-Type", ct);
-    upstream.headers.forEach((value, key) => {
-      const k = key.toLowerCase();
-      if (k === "content-encoding" || k === "transfer-encoding") return;
-      if (k === "content-length") return;
-      try {
-        res.setHeader(key, value);
-      } catch {
-        /* ignore invalid header names */
-      }
-    });
     return res.status(upstream.status).send(buf);
   } catch (e) {
     console.error("api/slack proxy:", e);

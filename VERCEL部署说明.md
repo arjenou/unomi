@@ -70,7 +70,7 @@
 
 本仓库还在根目录提供 **`/api/seminar-notify`**（Serverless + nodemailer），与静态 `outputDirectory` 可同时存在。
 
-根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 反向代理到 **`https://ec-force.com/images/*`**（避免镜像页请求本站 `/images/...` 出现 404）。**`/api/slack`** 由根目录 **`api/slack.js`**（Serverless）转发到 ec-force，而不是 `rewrites`。这**不能**解决浏览器直连 **`https://api.ec-force.com`** 时的跨域 + `credentials` 限制（需 ec-force 改 CORS，或改用 **iframe** 嵌入官方页面）。
+根目录 **`vercel.json`** 里另有 **`rewrites`**：把本站 **`/images/*`** 反向代理到 **`https://ec-force.com/images/*`**（避免镜像页请求本站 `/images/...` 出现 404）。**`/api/slack`** 由 **`api/slack.js`**（Serverless）转发到 ec-force。对 **`https://api.ec-force.com/api/v1/token`**：ec-force 的打包脚本会发起该请求；`form/index.html` 在 **`<head>` 最前**有 **`fetch` 补丁**，仅对该 URL 将 **`credentials` 设为 `omit`**，以便在对方返回 **`Access-Control-Allow-Origin: *`** 时通过浏览器 CORS（脚本里若用 `include` 会触发你看到的报错）。若仍失败，只能 **iframe 嵌官方 ec-force 页** 或请对方改 CORS。
 
 ---
 
